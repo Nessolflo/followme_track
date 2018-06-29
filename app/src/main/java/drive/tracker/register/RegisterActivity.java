@@ -49,15 +49,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         progressBar = findViewById(R.id.progress);
         registerModel = ViewModelProviders.of(this).get(RegisterModel.class);
         registerModel.init(getApplication());
-
         registerModel.getResponseData().observe(this, this::showResult);
         showId();
-        permissions = new Permissions(this, permisoObj);
-        if(!permissions.comprobarPermisos()){
-            permissions.solicitarPermisos();
-        }else {
-            startLocationService();
-        }
+
     }
 
     @Override
@@ -84,6 +78,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         if (!tempId.isEmpty()) {
             lblId.setVisibility(View.VISIBLE);
             lblId.setText(String.format(getString(R.string.id_registered), tempId));
+            requestPermissions();
         } else
             lblId.setVisibility(View.GONE);
     }
@@ -104,5 +99,15 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         if (ServiceLocation.INSTANCE != null)
             stopService(i);
         startService(i);
+    }
+
+    private void requestPermissions(){
+        if(permissions==null)
+            permissions = new Permissions(this, permisoObj);
+        if(!permissions.comprobarPermisos()){
+            permissions.solicitarPermisos();
+        }else {
+            startLocationService();
+        }
     }
 }
