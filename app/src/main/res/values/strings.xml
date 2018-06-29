@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Tracker</string>
+    <string name="add_id">Escribe el número de placa</string>
+    <string name="save">Guardar</string>
+    <string name="send">Enviar</string>
+    <string name="error_get_data">Error al intentar registrar</string>
+    <string name="id_registered">Id registrado: %s</string>
+    <string name="denied_permissions">Permisos denegados, debes aceptar los permisos para continuar!</string>
+</resources>
