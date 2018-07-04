@@ -6,4 +6,6 @@
     <string name="error_get_data">Error al intentar registrar</string>
     <string name="id_registered">Id registrado: %s</string>
     <string name="denied_permissions">Permisos denegados, debes aceptar los permisos para continuar!</string>
+    <string name="channel_name">Tracker</string>
+    <string name="channel_description">Configuración</string>
 </resources>
