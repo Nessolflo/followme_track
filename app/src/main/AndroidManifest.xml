@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="drive.tracker">
+
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -26,15 +27,24 @@
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
-        <service
-            android:name=".fcm.MyFirebaseMessagingService">
+        <service android:name=".fcm.MyFirebaseMessagingService">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <service android:name=".service.ServiceLocation"
+        <service
+            android:name=".service.ServiceLocation"
             android:enabled="true"
-            android:exported="true"/>
+            android:exported="true" />
+
+        <receiver
+            android:name=".service.ReceiverService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="drive.tracker.restart_location"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

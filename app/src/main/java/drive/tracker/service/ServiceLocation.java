@@ -3,6 +3,7 @@ package drive.tracker.service;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -20,8 +21,8 @@ public class ServiceLocation extends Service {
     public static ServiceLocation INSTANCE = null;
     private static final String TAG = "SERVICELOCATION";
     private LocationManager mLocationManager = null;
-    private static final int LOCATION_INTERVAL_MINUTES = 2;
-    private static final int LOCATION_INTERVAL = 1000 * 60 * LOCATION_INTERVAL_MINUTES;
+    private static final int SECONDS_KEY = 2;
+    private static final int LOCATION_INTERVAL = 1000 * SECONDS_KEY;
     private static final float LOCATION_DISTANCE = 10f;
 
     private ServiceRepository repository;
@@ -96,13 +97,26 @@ public class ServiceLocation extends Service {
         repository = new ServiceRepository();
         initializeLocationManager();
         try {
+            final SharedPreferences sharedPreferences =
+                    getSharedPreferences(getPackageName(), MODE_PRIVATE);
+            int seconds=
+                    sharedPreferences
+                            .getInt(
+                                    ConstantsTracker.KEY_SECONDS,
+                                    LOCATION_INTERVAL);
+            float meters =
+                    sharedPreferences
+                    .getFloat(ConstantsTracker.KEY_METERS, LOCATION_DISTANCE);
+
+
             mLocationManager.requestLocationUpdates(
-                    LocationManager.GPS_PROVIDER, LOCATION_INTERVAL, LOCATION_DISTANCE,
+                    LocationManager.GPS_PROVIDER, seconds, meters,
                     mLocationListeners[0]);
 
             mLocationManager.requestLocationUpdates(
-                    LocationManager.NETWORK_PROVIDER, LOCATION_INTERVAL, LOCATION_DISTANCE,
+                    LocationManager.NETWORK_PROVIDER, seconds, meters,
                     mLocationListeners[1]);
+            Log.d(TAG, "init config meters "+meters+ " seconds "+seconds);
         } catch (SecurityException ex) {
             Log.i(TAG, "fail to request location update, ignore", ex);
         } catch (IllegalArgumentException ex) {
